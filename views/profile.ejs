@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postly</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-zinc-900 min-h-screen text-white">
+
+    <header class="bg-zinc-800 px-8 py-4 flex items-center justify-between border-b border-zinc-700">
+        <h1 class="text-lg font-bold">Postly</h1>
+        <a href="/logout" class="text-sm text-zinc-400 hover:text-red-400">Logout</a>
+    </header>
+
+    <main class="max-w-xl mx-auto px-6 py-10">
+
+        <div class="flex items-center gap-4 mb-8">
+            <img class="w-14 h-14 rounded-full object-cover" src="https://i.pinimg.com/originals/e2/e1/bd/e2e1bd2e5c02d4d598a1abcf978789bd.gif" alt="avatar">
+            <div>
+                <h2 class="text-xl font-bold"><%= user.name %></h2>
+                <p class="text-zinc-400 text-sm">@<%= user.username %></p>
+            </div>
+        </div>
+
+        <form action="/post" method="post" class="flex flex-col gap-3 mb-10">
+            <textarea name="content" rows="3" placeholder="what's on your mind..." class="bg-zinc-800 border border-zinc-700 text-sm placeholder-zinc-500 px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
+            <div class="flex justify-end">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold px-6 py-2 rounded-lg">Post</button>
+            </div>
+        </form>
+
+        <p class="text-zinc-500 text-xs uppercase tracking-widest mb-4">Your Posts</p>
+
+        <% if(user.posts.length === 0) { %>
+            <p class="text-zinc-600 text-sm text-center py-10">no posts yet.</p>
+        <% } %>
+
+        <div class="flex flex-col gap-4">
+            <% user.posts.forEach(function(post){ %>
+            <div class="bg-zinc-800 border border-zinc-700 rounded-xl p-4">
+                <p class="text-indigo-400 text-xs mb-2">@<%= user.username %></p>
+                <p class="text-sm text-zinc-200"><%= post.content %></p>
+                <div class="flex gap-4 mt-4 border-t border-zinc-700 pt-3">
+                    <a href="/like/<%= post._id %>" class="text-xs hover:text-indigo-400 transition <%= (post.likes.indexOf(user.id)==-1) ? 'text-zinc-500' : 'text-indigo-400' %>">
+                    <%= (post.likes.indexOf(user.id)==-1) ? "♥ like" : "unlike" %> · <%= post.likes.length %>
+                    </a>
+                    <a href="/edit/<%= post._id %>" class="text-zinc-500 text-xs hover:text-indigo-400">✎ edit</a>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+
+    </main>
+</body>
+</html>
