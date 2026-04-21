@@ -61,7 +61,7 @@ app.post("/create",async (req,res)=>{
             username,
             age
         })
-        let token=jwt.sign({email:email,userid:cruser._id},"hehehe");
+        let token=jwt.sign({email:email,userid:cruser._id},process.env.JWT_SECRET);
         res.cookie("token",token);
         res.redirect("/profile");
         })
@@ -86,7 +86,7 @@ app.post("/login",async (req,res)=>{
     if(person) {
         bcrypt.compare(password,person.password,(err,result)=>{
             if(result){    
-                let token=jwt.sign({email:email,userid:person._id},"hehehe");
+                let token=jwt.sign({email:email,userid:person._id},process.env.JWT_SECRET);
                 res.cookie("token",token);    
                 return res.redirect("/profile/")
             }
@@ -99,12 +99,10 @@ app.post("/login",async (req,res)=>{
 function isloggedin(req,res,next){
     if(req.cookies.token=="") res.send("YOU must be logged in");
     else{
-        let data =jwt.verify(req.cookies.token,"hehehe");
+        let data =jwt.verify(req.cookies.token,process.env.JWT_SECRET);
         req.user=data;
         next();
     }
 }
 
-
-app.listen(3000);
-
+module.exports=app;
