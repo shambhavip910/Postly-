@@ -18,12 +18,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
-app.get("/", (req, res) => {
-    res.render("index");
-})
-app.get("/login", (req, res) => {
-    res.render("login");
-})
+// app.get("/", (req, res) => {
+//     res.render("index");
+// })
+// app.get("/login", (req, res) => {
+//     res.render("login");
+// })
 app.get("/logout", (req, res) => {
     res.cookie("token", "", { httpOnly: true });
     res.json({ success: true });
@@ -105,4 +105,5 @@ function isloggedin(req, res, next) {
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
+
 module.exports = app;
