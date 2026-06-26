@@ -10,7 +10,7 @@ const bcrypt = require('bcryptjs');
 
 app.set("view engine", "ejs");
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://postly-6g5f.onrender.com',
     credentials: true
 }));
 app.use(express.json());
